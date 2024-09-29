@@ -8,7 +8,9 @@ public class Player : MonoBehaviour
     public Transform enemyTransform;
     public GameObject bombPrefab;
     public Transform bombsTransform;
-    public float moveSpeed = 5f;
+    public float maxSpeed = 5f;
+    public float accelerationTime = 3f;
+    private float currentSpeed = 0f;
 
     void Update()
     {
@@ -35,7 +37,12 @@ public class Player : MonoBehaviour
         {
             velocity += Vector3.right;
         }
+        velocity.Normalize();
+        float acceleration = maxSpeed / accelerationTime;
+        currentSpeed += acceleration * Time.deltaTime;
+        currentSpeed = Mathf.Clamp(currentSpeed, 0, maxSpeed);
 
-        transform.position += moveSpeed * Time.deltaTime * velocity;
+        Vector3 currentVelocity = currentSpeed * velocity; 
+        transform.position += currentVelocity * Time.deltaTime; 
     }
 }
