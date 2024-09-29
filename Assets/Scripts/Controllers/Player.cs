@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     public Transform bombsTransform;
     public float maxSpeed = 5f;
     public float accelerationTime = 3f;
+    public float decelerationTime = 2f;
     private float currentSpeed = 0f;
 
     void Update()
@@ -37,12 +38,21 @@ public class Player : MonoBehaviour
         {
             velocity += Vector3.right;
         }
-        velocity.Normalize();
-        float acceleration = maxSpeed / accelerationTime;
-        currentSpeed += acceleration * Time.deltaTime;
-        currentSpeed = Mathf.Clamp(currentSpeed, 0, maxSpeed);
+        if (velocity != Vector3.zero)
+        {
+            velocity.Normalize(); 
 
-        Vector3 currentVelocity = currentSpeed * velocity; 
-        transform.position += currentVelocity * Time.deltaTime; 
+            float acceleration = maxSpeed / accelerationTime; 
+            currentSpeed += acceleration * Time.deltaTime; 
+            currentSpeed = Mathf.Clamp(currentSpeed, 0, maxSpeed);
+        }
+        else 
+        {
+            float deceleration = maxSpeed / decelerationTime; 
+            currentSpeed -= deceleration * Time.deltaTime; 
+            currentSpeed = Mathf.Clamp(currentSpeed, 0, maxSpeed); 
+        }
+        Vector3 currentVelocity = currentSpeed * velocity;
+        transform.position += currentVelocity * Time.deltaTime;
     }
 }
