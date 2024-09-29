@@ -30,5 +30,6 @@ public class Enemy : MonoBehaviour
             currentSpeed = Mathf.Clamp(currentSpeed, 0, maxSpeed); 
         }
         transform.position += direction * currentSpeed * Time.deltaTime;
+
     }
 }
