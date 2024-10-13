@@ -12,10 +12,13 @@ public class Player : MonoBehaviour
     public float accelerationTime = 3f;
     public float decelerationTime = 2f;
     private float currentSpeed = 0f;
+    public float radius = 3f;
+    public int circlePoints = 30;
 
     void Update()
     {
         PlayerMovement();
+        EnemyRadar(radius, circlePoints);
     }
 
     void PlayerMovement()
@@ -54,5 +57,34 @@ public class Player : MonoBehaviour
         }
         Vector3 currentVelocity = currentSpeed * velocity;
         transform.position += currentVelocity * Time.deltaTime;
+    }
+
+    public void EnemyRadar(float radius, int circlePoints)
+    {
+        Vector3 playerPosition = transform.position; 
+        bool isEnemyInRadius = Vector3.Distance(playerPosition, enemyTransform.position) <= radius;
+
+        Color radarColor;
+        if (isEnemyInRadius)
+        {
+            radarColor = Color.red;
+        }
+        else
+        {
+            radarColor = Color.green;
+        }
+
+        for (int i = 0; i < circlePoints; i++)
+        {
+            float nowAngle = i * (360f / circlePoints); 
+            float nextAngle = (i + 1) * (360f / circlePoints); 
+            float nowAngleRad = nowAngle * Mathf.Deg2Rad; 
+            float nextAngleRad = nextAngle * Mathf.Deg2Rad; 
+
+            Vector3 nowPoint = new Vector3(Mathf.Cos(nowAngleRad) * radius, Mathf.Sin(nowAngleRad) * radius, 0) + playerPosition;
+            Vector3 nextPoint = new Vector3(Mathf.Cos(nextAngleRad) * radius, Mathf.Sin(nextAngleRad) * radius, 0) + playerPosition;
+
+            Debug.DrawLine(nowPoint, nextPoint, radarColor); 
+        }
     }
 }
