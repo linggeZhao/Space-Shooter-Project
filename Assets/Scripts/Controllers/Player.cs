@@ -73,6 +73,8 @@ public class Player : MonoBehaviour
 
     public void EnemyRadar(float radius, int circlePoints)
     {
+        if (enemyTransform == null) return;
+
         Vector3 playerPosition = transform.position; 
         bool isEnemyInRadius = Vector3.Distance(playerPosition, enemyTransform.position) <= radius;
 

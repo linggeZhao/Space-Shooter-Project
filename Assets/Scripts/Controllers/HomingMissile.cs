@@ -28,9 +28,20 @@ public class HomingMissile : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.transform == target)
+        Enemy enemy = other.GetComponent<Enemy>();
+
+        if (enemy != null)
         {
-            Destroy(gameObject);
+            if (enemy.shieldActive)
+            {
+                enemy.ShieldHit();  
+            }
+            else
+            {
+                enemy.EnemyHit(); 
+            }
+
+            Destroy(gameObject); 
         }
     }
 }
