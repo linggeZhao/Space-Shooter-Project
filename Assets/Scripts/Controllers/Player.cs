@@ -17,6 +17,7 @@ public class Player : MonoBehaviour
     public GameObject powerupPrefab;
     public int numberOfPowerups = 5;
     public float spawnRadius = 5f;
+    public GameObject missilePrefab;
 
     void Update()
     {
@@ -25,6 +26,10 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.M))
         {
             SpawnPowerups(spawnRadius, numberOfPowerups);
+        }
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            MakeMissile();
         }
     }
 
@@ -107,6 +112,18 @@ public class Player : MonoBehaviour
             Vector3 powerupPosition = new Vector3(Mathf.Cos(angleRad) * spawnRadius, Mathf.Sin(angleRad) * spawnRadius, 0) + transform.position;
 
             Instantiate(powerupPrefab, powerupPosition, Quaternion.identity);
+        }
+    }
+
+    void MakeMissile()
+    {
+        GameObject missile = Instantiate(missilePrefab, transform.position, Quaternion.identity);
+
+        HomingMissile homingMissile = missile.GetComponent<HomingMissile>();
+
+        if (homingMissile != null)
+        {
+            homingMissile.SetTarget(enemyTransform);
         }
     }
 }
